@@ -30,4 +30,16 @@ struct IntSingle
 	int data;
 };
 
+struct NanValue
+{
+};
+
+enum class DataType
+{
+	IntArray,
+	Pose,
+	IntSingle,
+	NanValue
+};
+
 #endif

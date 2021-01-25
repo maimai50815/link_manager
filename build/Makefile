@@ -48,10 +48,10 @@ RM = /home/ruoyu/deep-learning/utils/cmake-3.12.2-Linux-x86_64/bin/cmake -E remo
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/ruoyu/control_ws/src/test/link_test
+CMAKE_SOURCE_DIR = /home/ruoyu/control_ws/src/test/link_manager
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/ruoyu/control_ws/src/test/link_test/build
+CMAKE_BINARY_DIR = /home/ruoyu/control_ws/src/test/link_manager/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -80,9 +80,9 @@ edit_cache/fast: edit_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/ruoyu/control_ws/src/test/link_test/build/CMakeFiles /home/ruoyu/control_ws/src/test/link_test/build/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/ruoyu/control_ws/src/test/link_manager/build/CMakeFiles /home/ruoyu/control_ws/src/test/link_manager/build/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/ruoyu/control_ws/src/test/link_test/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/ruoyu/control_ws/src/test/link_manager/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -111,84 +111,84 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named main2
+# Target rules for targets named slaver
 
 # Build rule for target.
-main2: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 main2
-.PHONY : main2
+slaver: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 slaver
+.PHONY : slaver
 
 # fast build rule for target.
-main2/fast:
-	$(MAKE) -f CMakeFiles/main2.dir/build.make CMakeFiles/main2.dir/build
-.PHONY : main2/fast
+slaver/fast:
+	$(MAKE) -f CMakeFiles/slaver.dir/build.make CMakeFiles/slaver.dir/build
+.PHONY : slaver/fast
 
 #=============================================================================
-# Target rules for targets named main1
+# Target rules for targets named manager
 
 # Build rule for target.
-main1: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 main1
-.PHONY : main1
+manager: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 manager
+.PHONY : manager
 
 # fast build rule for target.
-main1/fast:
-	$(MAKE) -f CMakeFiles/main1.dir/build.make CMakeFiles/main1.dir/build
-.PHONY : main1/fast
+manager/fast:
+	$(MAKE) -f CMakeFiles/manager.dir/build.make CMakeFiles/manager.dir/build
+.PHONY : manager/fast
 
-main1.o: main1.cpp.o
+src/manager.o: src/manager.cpp.o
 
-.PHONY : main1.o
-
-# target to build an object file
-main1.cpp.o:
-	$(MAKE) -f CMakeFiles/main1.dir/build.make CMakeFiles/main1.dir/main1.cpp.o
-.PHONY : main1.cpp.o
-
-main1.i: main1.cpp.i
-
-.PHONY : main1.i
-
-# target to preprocess a source file
-main1.cpp.i:
-	$(MAKE) -f CMakeFiles/main1.dir/build.make CMakeFiles/main1.dir/main1.cpp.i
-.PHONY : main1.cpp.i
-
-main1.s: main1.cpp.s
-
-.PHONY : main1.s
-
-# target to generate assembly for a file
-main1.cpp.s:
-	$(MAKE) -f CMakeFiles/main1.dir/build.make CMakeFiles/main1.dir/main1.cpp.s
-.PHONY : main1.cpp.s
-
-main2.o: main2.cpp.o
-
-.PHONY : main2.o
+.PHONY : src/manager.o
 
 # target to build an object file
-main2.cpp.o:
-	$(MAKE) -f CMakeFiles/main2.dir/build.make CMakeFiles/main2.dir/main2.cpp.o
-.PHONY : main2.cpp.o
+src/manager.cpp.o:
+	$(MAKE) -f CMakeFiles/manager.dir/build.make CMakeFiles/manager.dir/src/manager.cpp.o
+.PHONY : src/manager.cpp.o
 
-main2.i: main2.cpp.i
+src/manager.i: src/manager.cpp.i
 
-.PHONY : main2.i
+.PHONY : src/manager.i
 
 # target to preprocess a source file
-main2.cpp.i:
-	$(MAKE) -f CMakeFiles/main2.dir/build.make CMakeFiles/main2.dir/main2.cpp.i
-.PHONY : main2.cpp.i
+src/manager.cpp.i:
+	$(MAKE) -f CMakeFiles/manager.dir/build.make CMakeFiles/manager.dir/src/manager.cpp.i
+.PHONY : src/manager.cpp.i
 
-main2.s: main2.cpp.s
+src/manager.s: src/manager.cpp.s
 
-.PHONY : main2.s
+.PHONY : src/manager.s
 
 # target to generate assembly for a file
-main2.cpp.s:
-	$(MAKE) -f CMakeFiles/main2.dir/build.make CMakeFiles/main2.dir/main2.cpp.s
-.PHONY : main2.cpp.s
+src/manager.cpp.s:
+	$(MAKE) -f CMakeFiles/manager.dir/build.make CMakeFiles/manager.dir/src/manager.cpp.s
+.PHONY : src/manager.cpp.s
+
+src/slaver.o: src/slaver.cpp.o
+
+.PHONY : src/slaver.o
+
+# target to build an object file
+src/slaver.cpp.o:
+	$(MAKE) -f CMakeFiles/slaver.dir/build.make CMakeFiles/slaver.dir/src/slaver.cpp.o
+.PHONY : src/slaver.cpp.o
+
+src/slaver.i: src/slaver.cpp.i
+
+.PHONY : src/slaver.i
+
+# target to preprocess a source file
+src/slaver.cpp.i:
+	$(MAKE) -f CMakeFiles/slaver.dir/build.make CMakeFiles/slaver.dir/src/slaver.cpp.i
+.PHONY : src/slaver.cpp.i
+
+src/slaver.s: src/slaver.cpp.s
+
+.PHONY : src/slaver.s
+
+# target to generate assembly for a file
+src/slaver.cpp.s:
+	$(MAKE) -f CMakeFiles/slaver.dir/build.make CMakeFiles/slaver.dir/src/slaver.cpp.s
+.PHONY : src/slaver.cpp.s
 
 # Help Target
 help:
@@ -198,14 +198,14 @@ help:
 	@echo "... depend"
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
-	@echo "... main2"
-	@echo "... main1"
-	@echo "... main1.o"
-	@echo "... main1.i"
-	@echo "... main1.s"
-	@echo "... main2.o"
-	@echo "... main2.i"
-	@echo "... main2.s"
+	@echo "... slaver"
+	@echo "... manager"
+	@echo "... src/manager.o"
+	@echo "... src/manager.i"
+	@echo "... src/manager.s"
+	@echo "... src/slaver.o"
+	@echo "... src/slaver.i"
+	@echo "... src/slaver.s"
 .PHONY : help
 
 

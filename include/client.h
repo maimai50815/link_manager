@@ -11,6 +11,7 @@ public:
 	void publish(T& msg);
 private:
 	T type;
+	int port_;
 };
 
 template <typename T> 
