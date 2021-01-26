@@ -13,16 +13,29 @@
 #include <condition_variable>
 #include <memory>
 #include <functional>
+#include <iterator>
+
+#include <sys/socket.h>//1connect
+#include <sys/types.h>//2connect
+#include <netinet/in.h> //struct
+#include <string.h>//memset
+#include <stdio.h>//gets
+#include <unistd.h>//close
+#include <arpa/inet.h>//inet
 
 #define MESSAGE_SIZE 1024
 
+using namespace std;
+
 struct IntArray
 {
+	int id = 1;
 	std::vector<int> data;
 };
 
 struct Pose
 {
+	int id = 2;
 	float px, py, pz;
 	float theta;
 	float length, width, height;
@@ -30,11 +43,13 @@ struct Pose
 
 struct IntSingle
 {
+	int id = 3;
 	int data;
 };
 
 struct NanValue
 {
+	int id = 0;
 };
 
 enum class DataType

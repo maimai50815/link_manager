@@ -37,6 +37,22 @@ memory
 -
 functional
 -
+iterator
+-
+sys/socket.h
+-
+sys/types.h
+-
+netinet/in.h
+-
+string.h
+-
+stdio.h
+-
+unistd.h
+-
+arpa/inet.h
+-
 
 ../include/deserialize.h
 common.h
@@ -58,7 +74,7 @@ client.h
 server.h
 ../include/server.h
 
-/home/ruoyu/control_ws/src/test/link_manager/src/slaver.cpp
+/home/ruoyu/control_ws/src/test/link_manager/test/slaver.cpp
 socket_manager.h
-/home/ruoyu/control_ws/src/test/link_manager/src/socket_manager.h
+/home/ruoyu/control_ws/src/test/link_manager/test/socket_manager.h
 

@@ -6,8 +6,8 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
 include_directories(include)
 
-add_executable(manager src/manager.cpp)
+add_executable(manager test/manager.cpp)
 target_link_libraries(manager pthread)
 
-add_executable(slaver src/slaver.cpp)
-target_link_libraries(manager pthread)
+add_executable(slaver test/slaver.cpp)
+target_link_libraries(slaver pthread)

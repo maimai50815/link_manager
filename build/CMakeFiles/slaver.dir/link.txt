@@ -1,1 +1,1 @@
-/usr/bin/c++   -std=c++11  -rdynamic CMakeFiles/slaver.dir/src/slaver.cpp.o  -o slaver 
+/usr/bin/c++   -std=c++11  -rdynamic CMakeFiles/slaver.dir/test/slaver.cpp.o  -o slaver -lpthread 

@@ -57,27 +57,27 @@ include CMakeFiles/manager.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/manager.dir/flags.make
 
-CMakeFiles/manager.dir/src/manager.cpp.o: CMakeFiles/manager.dir/flags.make
-CMakeFiles/manager.dir/src/manager.cpp.o: ../src/manager.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ruoyu/control_ws/src/test/link_manager/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/manager.dir/src/manager.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/manager.dir/src/manager.cpp.o -c /home/ruoyu/control_ws/src/test/link_manager/src/manager.cpp
+CMakeFiles/manager.dir/test/manager.cpp.o: CMakeFiles/manager.dir/flags.make
+CMakeFiles/manager.dir/test/manager.cpp.o: ../test/manager.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ruoyu/control_ws/src/test/link_manager/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/manager.dir/test/manager.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/manager.dir/test/manager.cpp.o -c /home/ruoyu/control_ws/src/test/link_manager/test/manager.cpp
 
-CMakeFiles/manager.dir/src/manager.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/manager.dir/src/manager.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ruoyu/control_ws/src/test/link_manager/src/manager.cpp > CMakeFiles/manager.dir/src/manager.cpp.i
+CMakeFiles/manager.dir/test/manager.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/manager.dir/test/manager.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ruoyu/control_ws/src/test/link_manager/test/manager.cpp > CMakeFiles/manager.dir/test/manager.cpp.i
 
-CMakeFiles/manager.dir/src/manager.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/manager.dir/src/manager.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ruoyu/control_ws/src/test/link_manager/src/manager.cpp -o CMakeFiles/manager.dir/src/manager.cpp.s
+CMakeFiles/manager.dir/test/manager.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/manager.dir/test/manager.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ruoyu/control_ws/src/test/link_manager/test/manager.cpp -o CMakeFiles/manager.dir/test/manager.cpp.s
 
 # Object files for target manager
 manager_OBJECTS = \
-"CMakeFiles/manager.dir/src/manager.cpp.o"
+"CMakeFiles/manager.dir/test/manager.cpp.o"
 
 # External object files for target manager
 manager_EXTERNAL_OBJECTS =
 
-manager: CMakeFiles/manager.dir/src/manager.cpp.o
+manager: CMakeFiles/manager.dir/test/manager.cpp.o
 manager: CMakeFiles/manager.dir/build.make
 manager: CMakeFiles/manager.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/ruoyu/control_ws/src/test/link_manager/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable manager"

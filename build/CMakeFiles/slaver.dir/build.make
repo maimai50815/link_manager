@@ -57,27 +57,27 @@ include CMakeFiles/slaver.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/slaver.dir/flags.make
 
-CMakeFiles/slaver.dir/src/slaver.cpp.o: CMakeFiles/slaver.dir/flags.make
-CMakeFiles/slaver.dir/src/slaver.cpp.o: ../src/slaver.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ruoyu/control_ws/src/test/link_manager/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/slaver.dir/src/slaver.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/slaver.dir/src/slaver.cpp.o -c /home/ruoyu/control_ws/src/test/link_manager/src/slaver.cpp
+CMakeFiles/slaver.dir/test/slaver.cpp.o: CMakeFiles/slaver.dir/flags.make
+CMakeFiles/slaver.dir/test/slaver.cpp.o: ../test/slaver.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/ruoyu/control_ws/src/test/link_manager/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/slaver.dir/test/slaver.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/slaver.dir/test/slaver.cpp.o -c /home/ruoyu/control_ws/src/test/link_manager/test/slaver.cpp
 
-CMakeFiles/slaver.dir/src/slaver.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/slaver.dir/src/slaver.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ruoyu/control_ws/src/test/link_manager/src/slaver.cpp > CMakeFiles/slaver.dir/src/slaver.cpp.i
+CMakeFiles/slaver.dir/test/slaver.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/slaver.dir/test/slaver.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/ruoyu/control_ws/src/test/link_manager/test/slaver.cpp > CMakeFiles/slaver.dir/test/slaver.cpp.i
 
-CMakeFiles/slaver.dir/src/slaver.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/slaver.dir/src/slaver.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ruoyu/control_ws/src/test/link_manager/src/slaver.cpp -o CMakeFiles/slaver.dir/src/slaver.cpp.s
+CMakeFiles/slaver.dir/test/slaver.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/slaver.dir/test/slaver.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/ruoyu/control_ws/src/test/link_manager/test/slaver.cpp -o CMakeFiles/slaver.dir/test/slaver.cpp.s
 
 # Object files for target slaver
 slaver_OBJECTS = \
-"CMakeFiles/slaver.dir/src/slaver.cpp.o"
+"CMakeFiles/slaver.dir/test/slaver.cpp.o"
 
 # External object files for target slaver
 slaver_EXTERNAL_OBJECTS =
 
-slaver: CMakeFiles/slaver.dir/src/slaver.cpp.o
+slaver: CMakeFiles/slaver.dir/test/slaver.cpp.o
 slaver: CMakeFiles/slaver.dir/build.make
 slaver: CMakeFiles/slaver.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/ruoyu/control_ws/src/test/link_manager/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable slaver"

@@ -1,1 +1,1 @@
-/usr/bin/c++   -std=c++11  -rdynamic CMakeFiles/manager.dir/src/manager.cpp.o  -o manager -lpthread -lpthread 
+/usr/bin/c++   -std=c++11  -rdynamic CMakeFiles/manager.dir/test/manager.cpp.o  -o manager -lpthread 

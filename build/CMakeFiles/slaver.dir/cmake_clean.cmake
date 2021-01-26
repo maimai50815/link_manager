@@ -1,5 +1,5 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/slaver.dir/src/slaver.cpp.o"
+  "CMakeFiles/slaver.dir/test/slaver.cpp.o"
   "slaver.pdb"
   "slaver"
 )

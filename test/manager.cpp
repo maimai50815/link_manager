@@ -45,6 +45,14 @@ Manager::Manager()
 		{
 			std::this_thread::sleep_for(std::chrono::milliseconds(200));
 			pose_client_.publish(pose_msg_);
+
+			pose_msg_.px += 0.1;
+			pose_msg_.py -= 0.1;
+			pose_msg_.pz += 0.1;
+			pose_msg_.theta -= 0.1;
+			pose_msg_.length += 0.1;
+			pose_msg_.width -= 0.1;
+			pose_msg_.height += 0.1;
 		}
 	});
 }

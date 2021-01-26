@@ -136,59 +136,59 @@ manager/fast:
 	$(MAKE) -f CMakeFiles/manager.dir/build.make CMakeFiles/manager.dir/build
 .PHONY : manager/fast
 
-src/manager.o: src/manager.cpp.o
+test/manager.o: test/manager.cpp.o
 
-.PHONY : src/manager.o
-
-# target to build an object file
-src/manager.cpp.o:
-	$(MAKE) -f CMakeFiles/manager.dir/build.make CMakeFiles/manager.dir/src/manager.cpp.o
-.PHONY : src/manager.cpp.o
-
-src/manager.i: src/manager.cpp.i
-
-.PHONY : src/manager.i
-
-# target to preprocess a source file
-src/manager.cpp.i:
-	$(MAKE) -f CMakeFiles/manager.dir/build.make CMakeFiles/manager.dir/src/manager.cpp.i
-.PHONY : src/manager.cpp.i
-
-src/manager.s: src/manager.cpp.s
-
-.PHONY : src/manager.s
-
-# target to generate assembly for a file
-src/manager.cpp.s:
-	$(MAKE) -f CMakeFiles/manager.dir/build.make CMakeFiles/manager.dir/src/manager.cpp.s
-.PHONY : src/manager.cpp.s
-
-src/slaver.o: src/slaver.cpp.o
-
-.PHONY : src/slaver.o
+.PHONY : test/manager.o
 
 # target to build an object file
-src/slaver.cpp.o:
-	$(MAKE) -f CMakeFiles/slaver.dir/build.make CMakeFiles/slaver.dir/src/slaver.cpp.o
-.PHONY : src/slaver.cpp.o
+test/manager.cpp.o:
+	$(MAKE) -f CMakeFiles/manager.dir/build.make CMakeFiles/manager.dir/test/manager.cpp.o
+.PHONY : test/manager.cpp.o
 
-src/slaver.i: src/slaver.cpp.i
+test/manager.i: test/manager.cpp.i
 
-.PHONY : src/slaver.i
+.PHONY : test/manager.i
 
 # target to preprocess a source file
-src/slaver.cpp.i:
-	$(MAKE) -f CMakeFiles/slaver.dir/build.make CMakeFiles/slaver.dir/src/slaver.cpp.i
-.PHONY : src/slaver.cpp.i
+test/manager.cpp.i:
+	$(MAKE) -f CMakeFiles/manager.dir/build.make CMakeFiles/manager.dir/test/manager.cpp.i
+.PHONY : test/manager.cpp.i
 
-src/slaver.s: src/slaver.cpp.s
+test/manager.s: test/manager.cpp.s
 
-.PHONY : src/slaver.s
+.PHONY : test/manager.s
 
 # target to generate assembly for a file
-src/slaver.cpp.s:
-	$(MAKE) -f CMakeFiles/slaver.dir/build.make CMakeFiles/slaver.dir/src/slaver.cpp.s
-.PHONY : src/slaver.cpp.s
+test/manager.cpp.s:
+	$(MAKE) -f CMakeFiles/manager.dir/build.make CMakeFiles/manager.dir/test/manager.cpp.s
+.PHONY : test/manager.cpp.s
+
+test/slaver.o: test/slaver.cpp.o
+
+.PHONY : test/slaver.o
+
+# target to build an object file
+test/slaver.cpp.o:
+	$(MAKE) -f CMakeFiles/slaver.dir/build.make CMakeFiles/slaver.dir/test/slaver.cpp.o
+.PHONY : test/slaver.cpp.o
+
+test/slaver.i: test/slaver.cpp.i
+
+.PHONY : test/slaver.i
+
+# target to preprocess a source file
+test/slaver.cpp.i:
+	$(MAKE) -f CMakeFiles/slaver.dir/build.make CMakeFiles/slaver.dir/test/slaver.cpp.i
+.PHONY : test/slaver.cpp.i
+
+test/slaver.s: test/slaver.cpp.s
+
+.PHONY : test/slaver.s
+
+# target to generate assembly for a file
+test/slaver.cpp.s:
+	$(MAKE) -f CMakeFiles/slaver.dir/build.make CMakeFiles/slaver.dir/test/slaver.cpp.s
+.PHONY : test/slaver.cpp.s
 
 # Help Target
 help:
@@ -200,12 +200,12 @@ help:
 	@echo "... edit_cache"
 	@echo "... slaver"
 	@echo "... manager"
-	@echo "... src/manager.o"
-	@echo "... src/manager.i"
-	@echo "... src/manager.s"
-	@echo "... src/slaver.o"
-	@echo "... src/slaver.i"
-	@echo "... src/slaver.s"
+	@echo "... test/manager.o"
+	@echo "... test/manager.i"
+	@echo "... test/manager.s"
+	@echo "... test/slaver.o"
+	@echo "... test/slaver.i"
+	@echo "... test/slaver.s"
 .PHONY : help
 
 

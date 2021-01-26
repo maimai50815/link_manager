@@ -43,11 +43,11 @@ template <typename T>
 inline Client<T> SocketManager::makeClient(std::string topic)
 {
 	Client<T> client;
-	printf("port_map_:%p\n", &port_map_);
 
 	if(port_map_.find(topic) != port_map_.end())
 	{
 		cout<<"find client match:"<<topic<<","<<port_map_[topic]<<endl;
+		client.setPort(port_map_[topic]);
 	}
 
 	return client;
@@ -66,6 +66,8 @@ inline Server SocketManager::makeServer(std::string topic, std::function<void(co
 		cout<<"find server match:"<<topic<<","<<port_map_[topic]<<endl;
 		
 		server.setPort(port_map_[topic]);
+		server.setCallback(f);
+
 		server_list_.push_back(server);
 	}
 	
