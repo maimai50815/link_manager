@@ -2,6 +2,7 @@
 #define CLIENT_H
 
 #include "common.h"
+#include "serialize.h"
 
 template <typename T> 
 class Client
@@ -10,8 +11,7 @@ public:
 	Client();
 	void publish(T& msg);
 private:
-	T type;
-	int port_;
+	std::shared_ptr<Serializer> serializer_;
 };
 
 template <typename T> 

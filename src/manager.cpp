@@ -32,7 +32,7 @@ private:
 	
 };
 
-inline Manager::Manager()
+Manager::Manager()
 {
 	socket_manager_ = std::make_shared<SocketManager>();
 
@@ -49,18 +49,24 @@ inline Manager::Manager()
 	});
 }
 
-inline Manager::~Manager()
+Manager::~Manager()
 {
 	main_thread_->join();
 	delete main_thread_;
 }
 
-inline void Manager::finishCb(const IntSingle& msg)
+void Manager::finishCb(const IntSingle& msg)
 {
+	cout<<"finishCb:"<<msg.data<<endl;
 }
 
-inline void Manager::dataCb(const IntArray& msg)
+void Manager::dataCb(const IntArray& msg)
 {
+	for(auto it = msg.data.begin(); it != msg.data.end(); ++it)
+	{
+		cout<<(*it)<<" ";
+	}
+	cout<<endl;
 }
  
 }/* end of namespace */

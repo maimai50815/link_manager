@@ -1,6 +1,7 @@
 #ifndef COMMON_H
 #define COMMON_H
 
+#include <string.h>
 #include <iostream>
 #include <unordered_map>
 #include <algorithm>
@@ -12,6 +13,8 @@
 #include <condition_variable>
 #include <memory>
 #include <functional>
+
+#define MESSAGE_SIZE 1024
 
 struct IntArray
 {

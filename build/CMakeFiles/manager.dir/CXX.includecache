@@ -9,8 +9,12 @@
 ../include/client.h
 common.h
 ../include/common.h
+serialize.h
+../include/serialize.h
 
 ../include/common.h
+string.h
+-
 iostream
 -
 unordered_map
@@ -34,9 +38,19 @@ memory
 functional
 -
 
+../include/deserialize.h
+common.h
+../include/common.h
+
+../include/serialize.h
+common.h
+../include/common.h
+
 ../include/server.h
 common.h
 ../include/common.h
+deserialize.h
+../include/deserialize.h
 
 ../include/socket_manager.h
 client.h

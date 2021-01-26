@@ -4,6 +4,8 @@
 CMakeFiles/manager.dir/src/manager.cpp.o
  ../include/client.h
  ../include/common.h
+ ../include/deserialize.h
+ ../include/serialize.h
  ../include/server.h
  ../include/socket_manager.h
  /home/ruoyu/control_ws/src/test/link_manager/src/manager.cpp

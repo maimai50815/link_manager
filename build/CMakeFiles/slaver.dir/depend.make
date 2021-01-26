@@ -3,6 +3,8 @@
 
 CMakeFiles/slaver.dir/src/slaver.cpp.o: ../include/client.h
 CMakeFiles/slaver.dir/src/slaver.cpp.o: ../include/common.h
+CMakeFiles/slaver.dir/src/slaver.cpp.o: ../include/deserialize.h
+CMakeFiles/slaver.dir/src/slaver.cpp.o: ../include/serialize.h
 CMakeFiles/slaver.dir/src/slaver.cpp.o: ../include/server.h
 CMakeFiles/slaver.dir/src/slaver.cpp.o: ../include/socket_manager.h
 CMakeFiles/slaver.dir/src/slaver.cpp.o: ../src/slaver.cpp

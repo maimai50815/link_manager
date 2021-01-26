@@ -26,7 +26,7 @@ private:
 	std::thread* main_thread_;
 };
 
-inline Slaver::Slaver()
+Slaver::Slaver()
 {
 	socket_manager_ = std::make_shared<SocketManager>();
 	
@@ -35,13 +35,13 @@ inline Slaver::Slaver()
 	pose_server_ = socket_manager_->makeServer<Pose>("/pose", std::bind(&Slaver::poseCb, this, _1));
 }
 
-inline Slaver::~Slaver()
+Slaver::~Slaver()
 {
 	main_thread_->join();
 	delete main_thread_;
 }
 
-inline void Slaver::poseCb(const Pose& msg)
+void Slaver::poseCb(const Pose& msg)
 {
 }
 
