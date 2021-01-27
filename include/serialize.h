@@ -29,6 +29,10 @@ inline void Serializer::getBuffer(Pose& msg, char send_buf[MESSAGE_SIZE])
 	pose_buf[6] = msg.height;
 
 	memcpy(send_buf, pose_buf, 7*sizeof(float));
+
+	char frame_buf[10];
+	strcpy(frame_buf, msg.frame_id.c_str());
+	memcpy(send_buf+7*sizeof(float), frame_buf, 10*sizeof(char));
 }
 
 inline void Serializer::getBuffer(IntSingle& msg, char send_buf[MESSAGE_SIZE])

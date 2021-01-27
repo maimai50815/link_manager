@@ -67,6 +67,7 @@ void Slaver::poseCb(const Pose& msg)
 {
 	cout<<"receive pose:"<<msg.px<<","<<msg.py<<","<<msg.pz<<","<<msg.theta<<\
 		","<<msg.length<<","<<msg.width<<","<<msg.height<<endl;
+	cout<<"frame_id:"<<msg.frame_id<<endl;
 }
 
 }/* end of namespace */

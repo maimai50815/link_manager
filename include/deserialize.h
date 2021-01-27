@@ -22,8 +22,10 @@ inline Deserializer::Deserializer()
 inline bool Deserializer::getMsg(char buf[MESSAGE_SIZE], Pose& msg)
 {
 	float pose_buf[7];
-	
+	char frame_buf[10];
+ 
 	memcpy(pose_buf, buf, 7*sizeof(float));
+	memcpy(frame_buf, buf+7*sizeof(float), 10*sizeof(char));
 
 	msg.px = pose_buf[0];
 	msg.py = pose_buf[1];
@@ -32,6 +34,9 @@ inline bool Deserializer::getMsg(char buf[MESSAGE_SIZE], Pose& msg)
 	msg.length = pose_buf[4];
 	msg.width = pose_buf[5];
 	msg.height = pose_buf[6];
+	
+	std::string str(frame_buf);
+	msg.frame_id = str;
 
 	return true;
 }

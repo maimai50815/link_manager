@@ -53,6 +53,7 @@ Manager::Manager()
 			pose_msg_.length += 0.1;
 			pose_msg_.width -= 0.1;
 			pose_msg_.height += 0.1;
+			pose_msg_.frame_id = "frame_id";
 		}
 	});
 }

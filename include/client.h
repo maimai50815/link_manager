@@ -70,7 +70,7 @@ inline void Client<T>::link()
 	}
 	else if(!linked_)
 	{
-		memset(&server_addr_,0,sizeof(server_addr_)); //数据初始化--清零
+		memset(&server_addr_,0,sizeof(server_addr_));
 		server_addr_.sin_family = AF_INET;
 		server_addr_.sin_port = htons(port_);
 

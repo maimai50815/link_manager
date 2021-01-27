@@ -39,6 +39,7 @@ struct Pose
 	float px, py, pz;
 	float theta;
 	float length, width, height;
+	std::string frame_id;
 };
 
 struct IntSingle
