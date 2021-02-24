@@ -32,7 +32,12 @@ inline SocketManager::SocketManager()
 	port_map_.insert(make_pair("/pose", 2001));
 	port_map_.insert(make_pair("/finish", 2002));
 	port_map_.insert(make_pair("/data", 2003));
-
+	port_map_.insert(make_pair("/layout", 2004));
+	port_map_.insert(make_pair("/triggered", 2005));
+	port_map_.insert(make_pair("/cache", 2006));
+	port_map_.insert(make_pair("/switch", 2007));
+	port_map_.insert(make_pair("/fake", 2008));
+	port_map_.insert(make_pair("/clear", 2009));
 }
 
 inline SocketManager::~SocketManager()

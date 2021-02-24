@@ -1,7 +1,15 @@
 #include "socket_manager.h"
+#include <signal.h>
 
 using namespace std;
 using namespace std::placeholders;
+
+bool cycle_finished = false;
+static void basicSigintHandler(int)
+{
+    cycle_finished = true;
+    cout<<"!!!!!!!!!!!!!! basicSigintHandler"<<endl;
+}
 
 namespace manager
 {
@@ -26,7 +34,7 @@ private:
 
 	void poseCb(const Pose& msg);
 	
-	std::thread* main_thread_;
+	std::thread* main_thread_, *spin_thread_;
 };
 
 Slaver::Slaver()
@@ -38,6 +46,8 @@ Slaver::Slaver()
 	pose_server_ = socket_manager_->makeServer<Pose>("/pose", std::bind(&Slaver::poseCb, this, _1));
 
 	data_msg_.data.resize(5);
+	
+	signal(SIGINT, basicSigintHandler);
 
 	main_thread_ = new std::thread([&](){
 		while(1)
@@ -55,12 +65,25 @@ Slaver::Slaver()
 			data_msg_.data[4] += 1;
 		}
 	});
+
+	spin_thread_ = new std::thread([&](){
+		while(!cycle_finished)
+		{
+			std::this_thread::sleep_for(std::chrono::milliseconds(50));
+			socket_manager_->spinOnce();
+		}
+		cout<<"spin finish"<<endl;
+	});
 }
 
 Slaver::~Slaver()
 {
+	cout<<"...... slaver dtor"<<endl;
 	main_thread_->join();
+	spin_thread_->join();
 	delete main_thread_;
+	delete spin_thread_;
+	cout<<"...... slaver dtor finish"<<endl;
 }
 
 void Slaver::poseCb(const Pose& msg)
@@ -75,6 +98,6 @@ void Slaver::poseCb(const Pose& msg)
 int main(int argc, char** argv)
 {
 	manager::Slaver s;
-	socket_manager::spin(s.getSocketManager());
+	//socket_manager::spin(s.getSocketManager());
 	return 0;
 }
