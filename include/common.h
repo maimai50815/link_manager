@@ -14,6 +14,7 @@
 #include <memory>
 #include <functional>
 #include <iterator>
+#include <queue>
 
 #include <sys/socket.h>//1connect
 #include <sys/types.h>//2connect
@@ -22,6 +23,8 @@
 #include <stdio.h>//gets
 #include <unistd.h>//close
 #include <arpa/inet.h>//inet
+
+#include <signal.h>
 
 #define MESSAGE_SIZE 1024
 

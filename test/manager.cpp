@@ -1,5 +1,4 @@
 #include "socket_manager.h"
-#include <signal.h>
 
 using namespace std;
 using namespace std::placeholders;

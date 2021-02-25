@@ -39,6 +39,8 @@ functional
 -
 iterator
 -
+queue
+-
 sys/socket.h
 -
 sys/types.h
@@ -52,6 +54,8 @@ stdio.h
 unistd.h
 -
 arpa/inet.h
+-
+signal.h
 -
 
 ../include/deserialize.h

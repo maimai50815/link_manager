@@ -1,4 +1,5 @@
 /home/ruoyu/control_ws/src/test/link_manager/build/CMakeFiles/rebuild_cache.dir
-/home/ruoyu/control_ws/src/test/link_manager/build/CMakeFiles/edit_cache.dir
-/home/ruoyu/control_ws/src/test/link_manager/build/CMakeFiles/slaver.dir
+/home/ruoyu/control_ws/src/test/link_manager/build/CMakeFiles/link_master.dir
 /home/ruoyu/control_ws/src/test/link_manager/build/CMakeFiles/manager.dir
+/home/ruoyu/control_ws/src/test/link_manager/build/CMakeFiles/slaver.dir
+/home/ruoyu/control_ws/src/test/link_manager/build/CMakeFiles/edit_cache.dir

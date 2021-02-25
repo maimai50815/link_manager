@@ -111,17 +111,17 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named slaver
+# Target rules for targets named link_master
 
 # Build rule for target.
-slaver: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 slaver
-.PHONY : slaver
+link_master: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 link_master
+.PHONY : link_master
 
 # fast build rule for target.
-slaver/fast:
-	$(MAKE) -f CMakeFiles/slaver.dir/build.make CMakeFiles/slaver.dir/build
-.PHONY : slaver/fast
+link_master/fast:
+	$(MAKE) -f CMakeFiles/link_master.dir/build.make CMakeFiles/link_master.dir/build
+.PHONY : link_master/fast
 
 #=============================================================================
 # Target rules for targets named manager
@@ -135,6 +135,46 @@ manager: cmake_check_build_system
 manager/fast:
 	$(MAKE) -f CMakeFiles/manager.dir/build.make CMakeFiles/manager.dir/build
 .PHONY : manager/fast
+
+#=============================================================================
+# Target rules for targets named slaver
+
+# Build rule for target.
+slaver: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 slaver
+.PHONY : slaver
+
+# fast build rule for target.
+slaver/fast:
+	$(MAKE) -f CMakeFiles/slaver.dir/build.make CMakeFiles/slaver.dir/build
+.PHONY : slaver/fast
+
+src/link_master.o: src/link_master.cpp.o
+
+.PHONY : src/link_master.o
+
+# target to build an object file
+src/link_master.cpp.o:
+	$(MAKE) -f CMakeFiles/link_master.dir/build.make CMakeFiles/link_master.dir/src/link_master.cpp.o
+.PHONY : src/link_master.cpp.o
+
+src/link_master.i: src/link_master.cpp.i
+
+.PHONY : src/link_master.i
+
+# target to preprocess a source file
+src/link_master.cpp.i:
+	$(MAKE) -f CMakeFiles/link_master.dir/build.make CMakeFiles/link_master.dir/src/link_master.cpp.i
+.PHONY : src/link_master.cpp.i
+
+src/link_master.s: src/link_master.cpp.s
+
+.PHONY : src/link_master.s
+
+# target to generate assembly for a file
+src/link_master.cpp.s:
+	$(MAKE) -f CMakeFiles/link_master.dir/build.make CMakeFiles/link_master.dir/src/link_master.cpp.s
+.PHONY : src/link_master.cpp.s
 
 test/manager.o: test/manager.cpp.o
 
@@ -197,9 +237,13 @@ help:
 	@echo "... clean"
 	@echo "... depend"
 	@echo "... rebuild_cache"
-	@echo "... edit_cache"
-	@echo "... slaver"
+	@echo "... link_master"
 	@echo "... manager"
+	@echo "... slaver"
+	@echo "... edit_cache"
+	@echo "... src/link_master.o"
+	@echo "... src/link_master.i"
+	@echo "... src/link_master.s"
 	@echo "... test/manager.o"
 	@echo "... test/manager.i"
 	@echo "... test/manager.s"

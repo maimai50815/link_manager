@@ -1,0 +1,1 @@
+/usr/bin/c++   -std=c++11  -rdynamic CMakeFiles/link_master.dir/src/link_master.cpp.o  -o link_master -lpthread 
