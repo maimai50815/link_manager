@@ -5,6 +5,7 @@ CMakeFiles/link_master.dir/src/link_master.cpp.o: ../include/client.h
 CMakeFiles/link_master.dir/src/link_master.cpp.o: ../include/common.h
 CMakeFiles/link_master.dir/src/link_master.cpp.o: ../include/deserialize.h
 CMakeFiles/link_master.dir/src/link_master.cpp.o: ../include/link_master.h
+CMakeFiles/link_master.dir/src/link_master.cpp.o: ../include/link_rpc.h
 CMakeFiles/link_master.dir/src/link_master.cpp.o: ../include/serialize.h
 CMakeFiles/link_master.dir/src/link_master.cpp.o: ../include/server.h
 CMakeFiles/link_master.dir/src/link_master.cpp.o: ../include/socket_manager.h

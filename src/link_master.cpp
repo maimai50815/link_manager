@@ -26,20 +26,30 @@ LinkMaster::LinkMaster()
 		cout<<"add task"<<endl;
 		thread_pool_->addTask([i](){
 			cout<<"i:"<<i<<endl;
-			std::this_thread::sleep_for(std::chrono::milliseconds(100));
 		});
 	}
 
-	while(!finished_)
-	{
-		std::this_thread::sleep_for(std::chrono::milliseconds(50));
-	}
+	main_thread_ = new std::thread(&LinkMaster::mainCycle, this);
 }
 
 LinkMaster::~LinkMaster()
 {
 	cout<<"link manager dtor"<<endl;
 	thread_pool_->stop();
+}
+
+void LinkMaster::initServer()
+{
+	
+}
+
+void LinkMaster::mainCycle()
+{
+	while(!finished_)
+	{
+		std::this_thread::sleep_for(std::chrono::milliseconds(100));
+
+	}
 }
 
 }/* end of namespace */

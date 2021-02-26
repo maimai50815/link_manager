@@ -6,6 +6,7 @@ CMakeFiles/link_master.dir/src/link_master.cpp.o
  ../include/common.h
  ../include/deserialize.h
  ../include/link_master.h
+ ../include/link_rpc.h
  ../include/serialize.h
  ../include/server.h
  ../include/socket_manager.h

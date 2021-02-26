@@ -62,6 +62,10 @@ signal.h
 common.h
 ../include/common.h
 
+../include/link_rpc.h
+common.h
+../include/common.h
+
 ../include/serialize.h
 common.h
 ../include/common.h
@@ -77,6 +81,8 @@ client.h
 ../include/client.h
 server.h
 ../include/server.h
+link_rpc.h
+../include/link_rpc.h
 
 /home/ruoyu/control_ws/src/test/link_manager/test/manager.cpp
 socket_manager.h

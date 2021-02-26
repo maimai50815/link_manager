@@ -30,6 +30,11 @@
 
 using namespace std;
 
+struct TopicInfo
+{
+
+};
+
 struct IntArray
 {
 	int id = 1;
@@ -63,5 +68,11 @@ enum class DataType
 	IntSingle,
 	NanValue
 };
+
+static int buildSocket()
+{
+	int fd = socket(AF_INET, SOCK_STREAM, 0);
+	return fd;
+}
 
 #endif

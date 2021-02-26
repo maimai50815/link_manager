@@ -68,6 +68,10 @@ socket_manager.h
 thread_pool.h
 ../include/thread_pool.h
 
+../include/link_rpc.h
+common.h
+../include/common.h
+
 ../include/serialize.h
 common.h
 ../include/common.h
@@ -83,6 +87,8 @@ client.h
 ../include/client.h
 server.h
 ../include/server.h
+link_rpc.h
+../include/link_rpc.h
 
 ../include/thread_pool.h
 common.h

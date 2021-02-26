@@ -4,6 +4,7 @@
 CMakeFiles/slaver.dir/test/slaver.cpp.o: ../include/client.h
 CMakeFiles/slaver.dir/test/slaver.cpp.o: ../include/common.h
 CMakeFiles/slaver.dir/test/slaver.cpp.o: ../include/deserialize.h
+CMakeFiles/slaver.dir/test/slaver.cpp.o: ../include/link_rpc.h
 CMakeFiles/slaver.dir/test/slaver.cpp.o: ../include/serialize.h
 CMakeFiles/slaver.dir/test/slaver.cpp.o: ../include/server.h
 CMakeFiles/slaver.dir/test/slaver.cpp.o: ../include/socket_manager.h

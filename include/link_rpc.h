@@ -9,11 +9,16 @@ class LinkRpc
 {
 public:
 	LinkRpc();
-	void execute();
+	static void execute(TopicInfo&);
 private:
+	const int master_port_ = 9000;
 };
 
 inline LinkRpc::LinkRpc()
+{
+}
+
+inline void LinkRpc::execute(TopicInfo& info)
 {
 }
 
