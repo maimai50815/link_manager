@@ -19,14 +19,14 @@ public:
 private:
 	void mainCycle();
 
-	void processRpcCmd();
+	void processRpcCmd(char (&recv_buf)[MESSAGE_SIZE], char (&send_buf)[MESSAGE_SIZE]);
 
 	std::unordered_map<std::string, std::vector<TopicInfo> > topic_info_map_;
 
 	std::shared_ptr<ThreadPool> thread_pool_;
 	int thread_size_ = 4;
 
-	std::thread* main_thread_;
+	std::thread* main_thread_ = nullptr;
 
 	const int master_port_ = 9000;
 	int socket_fd_;

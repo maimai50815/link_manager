@@ -29,6 +29,13 @@ LinkMaster::LinkMaster()
 LinkMaster::~LinkMaster()
 {
 	cout<<"link manager dtor"<<endl;
+
+	if(main_thread_)
+	{
+		main_thread_->join();
+		delete main_thread_;
+	}
+
 	thread_pool_->stop();
 }
 
@@ -59,18 +66,20 @@ void LinkMaster::mainCycle()
 		thread_pool_->addTask([&](){
 			int fd = clifd;
 			cout<<"process begin:"<<fd<<endl;
-			char recv_buf[10];
+			char recv_buf[MESSAGE_SIZE];
+			char send_buf[MESSAGE_SIZE];
 			int i = 0;
 			while(1)
 			{
 				cout<<"recv:"<<fd<<endl;
-				int size = recv(fd, recv_buf, 1024, 0);
+				int size = recv(fd, recv_buf, MESSAGE_SIZE, 0);
 
 				if(size>0)
 				{
+					recv_buf[size] = '\0';
 					printf("%s\n", recv_buf);
-					processRpcCmd();
-					send(fd,to_string(fd).c_str(),21,0);
+					processRpcCmd(recv_buf, send_buf);
+					send(fd, send_buf, strlen(send_buf), 0);
 				}
 				else
 					break;
@@ -83,9 +92,30 @@ void LinkMaster::mainCycle()
 	cout<<"link master main cycle finished"<<endl;
 }
 
-void LinkMaster::processRpcCmd()
+void LinkMaster::processRpcCmd(char (&recv_buf)[MESSAGE_SIZE], char (&send_buf)[MESSAGE_SIZE])
 {
+	int recv_int_buf[100];
+	int send_int_buf[100];
+	memcpy(recv_int_buf, recv_buf, 2*sizeof(int));
 
+	TopicInfo info;
+	info.pid = recv_int_buf[0];
+	info.type = recv_int_buf[1];
+	
+	char tmp[100];
+	memcpy(tmp, recv_buf+2*sizeof(int), strlen(recv_buf)-2*sizeof(int));
+	std::string topic(tmp);
+	info.topic = topic;
+
+	/* TODO */
+	/* ******* */
+
+	auto& info_list = topic_info_map_[info.topic];
+	for(size_t i = 0; i < info_list.size(); ++i)
+	{
+		send_int_buf[i] = info_list[i].port;
+	}
+	memcpy(send_buf, send_int_buf, info_list.size()*sizeof(int));
 }
 
 }/* end of namespace */

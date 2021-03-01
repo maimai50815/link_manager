@@ -26,12 +26,14 @@
 
 #include <signal.h>
 
-#define MESSAGE_SIZE 1024
+#define MESSAGE_SIZE 128
 
 using namespace std;
 
 #define CLIENT 1
 #define SERVER 2
+
+static int master_port = 9000;
 
 struct TopicInfo
 {
