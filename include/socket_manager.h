@@ -32,10 +32,13 @@ private:
 	int retry_times_ = 0;
 	const int master_port_ = 9000;
 	const std::string master_ip_ = "127.0.0.1";
+
+	int process_id_ = -1;
 };
 
 inline SocketManager::SocketManager()
 {
+	process_id_ = getpid();
 	while(1)
 	{
 		if(connectMaster())
@@ -94,8 +97,11 @@ inline Client<T> SocketManager::makeClient(std::string topic)
 	// }
 
 	TopicInfo info;
-
-	link_master::LinkRpc::execute(info);
+	info.topic = topic;
+	info.pid = process_id_;
+	info.type = CLIENT;
+	
+	link_master::LinkRpc::execute(info, client.getPortList());
 
 	return client;
 }
@@ -104,6 +110,11 @@ template <typename T>
 inline Server SocketManager::makeServer(std::string topic, std::function<void(const T&)> f)
 {
 	Server server;
+
+	TopicInfo info;
+	info.topic = topic;
+	info.pid = process_id_;
+	info.type = SERVER;
 
 	T type;
 	server.determineType(type);

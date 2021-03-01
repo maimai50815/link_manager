@@ -19,7 +19,9 @@ public:
 private:
 	void mainCycle();
 
-	std::unordered_map<std::string, int> topic_port_map_;
+	void processRpcCmd();
+
+	std::unordered_map<std::string, std::vector<TopicInfo> > topic_info_map_;
 
 	std::shared_ptr<ThreadPool> thread_pool_;
 	int thread_size_ = 4;
@@ -27,6 +29,8 @@ private:
 	std::thread* main_thread_;
 
 	const int master_port_ = 9000;
+	int socket_fd_;
+	int port_begin_ = 1000;
 };
 }/* end of namespace */
 #endif

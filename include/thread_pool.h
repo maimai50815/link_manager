@@ -84,6 +84,8 @@ inline void ThreadPool::processTask()
 		cond_.wait(lg, [this]{
 			return (!started_ || !task_queue_.empty());
 		});
+
+		lg.unlock();
 		
 		if(!task_queue_.empty())
 		{

@@ -30,9 +30,15 @@
 
 using namespace std;
 
+#define CLIENT 1
+#define SERVER 2
+
 struct TopicInfo
 {
-
+	int pid = -1;
+	int type = -1; 
+	std::string topic;
+	int port = -1;
 };
 
 struct IntArray
@@ -72,7 +78,28 @@ enum class DataType
 static int buildSocket()
 {
 	int fd = socket(AF_INET, SOCK_STREAM, 0);
+	int on = 1;
+	setsockopt(fd, SOL_SOCKET, SO_REUSEADDR, &on, sizeof(on));
+	
 	return fd;
+}
+
+static int bindSocket(int port, int socket_fd)
+{
+	struct sockaddr_in servaddr;
+	memset(&servaddr, 0, sizeof(servaddr));
+	servaddr.sin_family = AF_INET;
+	servaddr.sin_port = (port);
+	servaddr.sin_addr.s_addr = inet_addr("127.0.0.1"); /* 监听本机所有IP*/
+	//inet_aton("192.168.0.16", &servaddr.sin_addr); /* 监听指定ip */
+
+	int rv = bind(socket_fd, (struct sockaddr *)&servaddr, sizeof(servaddr));
+	if (rv < 0)
+	{
+		printf("Socket[%d] bind on port[%d] failure\n", socket_fd, port);
+		return -1;
+	}
+	return 1;
 }
 
 #endif

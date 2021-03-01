@@ -18,6 +18,11 @@ public:
 	void determineType();
 	void link();
 	void buildSocket();
+	std::vector<int>& getPortList()
+	{
+		auto& p = port_list_;
+		return p;
+	}
 private:
 	std::shared_ptr<Serializer> serializer_;
 
@@ -34,6 +39,8 @@ private:
 	bool linked_ = false;
 
 	std::string ip_ = "127.0.0.1";
+
+	std::vector<int> port_list_;
 private:
 	bool init_ = false;
 };
