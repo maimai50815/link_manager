@@ -26,8 +26,8 @@ private:
 	std::shared_ptr<SocketManager> socket_manager_;
 
 	Server pose_server_;
-	Client<IntSingle> finish_client_;
-	Client<IntArray> data_client_;
+	Client finish_client_;
+	Client data_client_;
 
 	IntSingle finish_msg_;
 	IntArray data_msg_;

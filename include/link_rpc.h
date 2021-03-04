@@ -56,8 +56,8 @@ inline void LinkRpc::execute(TopicInfo& info, std::vector<int>& ports)
 	const char* topic_buf = info.topic.c_str();
 	memcpy(send_buf+sizeof(int)*2, topic_buf, strlen(topic_buf));
 	
-	int sned_size = send(client_sockfd, send_buf, strlen(send_buf), 0);
-	if(sned_size < 0)
+	int send_size = send(client_sockfd, send_buf, strlen(send_buf), 0);
+	if(send_size < 0)
 	{
 		cout<<"send to link master failed"<<endl;
 		return;

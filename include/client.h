@@ -4,18 +4,23 @@
 #include "common.h"
 #include "serialize.h"
 
-template <typename T> 
 class Client
 {
 public:
 	Client();
+
+	template <typename T>
 	void publish(T& msg);
+
 	void setPort(int port) 
-	{ 
+	{
 		port_ = port; 
 		init_ = true;
 	}
-	void determineType();
+
+	template <typename T>
+	void determineType(T type);
+
 	void link();
 	void buildSocket();
 	std::vector<int>& getPortList()
@@ -23,12 +28,15 @@ public:
 		auto& p = port_list_;
 		return p;
 	}
+
+	void setTopicInfo(TopicInfo&& info){ topic_info_ = info; }
+	TopicInfo& getTopicInfo(){ auto& p = topic_info_; return p; }
+	
 private:
 	std::shared_ptr<Serializer> serializer_;
 
 	int port_;
 	DataType type_;
-	T type;
 
 	char send_buf_[MESSAGE_SIZE];
 	
@@ -43,19 +51,18 @@ private:
 	std::vector<int> port_list_;
 private:
 	bool init_ = false;
+
+	TopicInfo topic_info_;
 };
 
-template <typename T> 
-inline Client<T>::Client()
+inline Client::Client()
 {
-	determineType();
 	serializer_ = std::make_shared<Serializer>();
 
 	buildSocket();
 }
 
-template <typename T>
-inline void Client<T>::buildSocket()
+inline void Client::buildSocket()
 {
 	socket_fd_ = socket(AF_INET, SOCK_STREAM, 0);
 
@@ -68,8 +75,7 @@ inline void Client<T>::buildSocket()
 		socket_built_ = true;
 }
 
-template <typename T>
-inline void Client<T>::link()
+inline void Client::link()
 {
 	if(!socket_built_)
 	{
@@ -100,7 +106,7 @@ inline void Client<T>::link()
 }
 
 template <typename T>
-inline void Client<T>::publish(T& msg)
+inline void Client::publish(T& msg)
 {
 	if(!init_)
 		return;
@@ -123,11 +129,11 @@ inline void Client<T>::publish(T& msg)
 }
 
 template <typename T>
-inline void Client<T>::determineType()
+inline void Client::determineType(T type)
 {
-	cout<<"type id:"<<this->type.id<<endl;
+	cout<<"type id:"<<type.id<<endl;
 
-	switch(this->type.id)
+	switch(type.id)
 	{
 		case 1:{
 			cout<<"is IntArray"<<endl;

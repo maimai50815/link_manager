@@ -108,7 +108,36 @@ void LinkMaster::processRpcCmd(char (&recv_buf)[MESSAGE_SIZE], char (&send_buf)[
 	info.topic = topic;
 
 	/* TODO */
-	/* ******* */
+	/* dispatch the ports to clients and servers */
+	/* a server could accept a single client ... */
+	if(info.type == SERVER)
+	{
+		if(topic_info_map_.find(topic) == topic_info_map_.end())
+		{
+			/* if a topic has never been mentioned */
+			info.port = port_dispatch_;
+			++port_dispatch_;
+			topic_info_map_.insert(make_pair(topic, info));
+		}
+		else
+		{
+			/* if the topic has been already registered */
+			auto& info_list = topic_info_map_[topic];
+			for(size_t i = 0; i < info_list.size(); ++i)
+			{
+				if(info_list[i].type == CLIENT)
+				{
+					send_int_buf[i] = info_list[i].port;
+					break;
+				}
+			}
+		}
+	}
+	else
+	{
+		
+	}
+	
 
 	auto& info_list = topic_info_map_[info.topic];
 	for(size_t i = 0; i < info_list.size(); ++i)

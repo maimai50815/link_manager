@@ -40,12 +40,16 @@ public:
 	void receiveOnce();
 	void buildSocket();
 	void link();
+
+	void setTopicInfo(TopicInfo&& info){ topic_info_ = info; }
+	TopicInfo& getTopicInfo(){ auto& p = topic_info_; return p; }
+	
 private:
 	std::shared_ptr<Deserializer> deserializer_;
 	
 	DataType type_;
 	
-	int port_;
+	int port_ = -1;
 
 	std::string ip_ = "127.0.0.1";
 	sockaddr_in local_addr_, remote_addr_;
@@ -57,6 +61,8 @@ private:
 	int socket_fd_, accept_fd_;
 	bool socket_built_ = false;
 	bool linked_ = false;
+
+	TopicInfo topic_info_;
 };
 
 inline Server::Server()

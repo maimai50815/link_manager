@@ -30,7 +30,7 @@ private:
 
 	const int master_port_ = 9000;
 	int socket_fd_;
-	int port_begin_ = 1000;
+	int port_dispatch_ = 1000;
 };
 }/* end of namespace */
 #endif

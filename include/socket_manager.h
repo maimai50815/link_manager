@@ -14,7 +14,7 @@ public:
 	~SocketManager();
 
 	template <typename T>
-	Client<T> makeClient(std::string topic);
+	Client makeClient(std::string topic);
 
 	template <typename T>
 	Server makeServer(std::string topic, std::function<void(const T&)> f);
@@ -23,7 +23,7 @@ public:
 private:
 
 	std::vector<Server> server_list_;
-
+	std::vector<Client> client_list_;
 private:
 	/* make sure that link-master is running */
 	bool connectMaster();
@@ -86,9 +86,9 @@ inline bool SocketManager::connectMaster()
 }
 
 template <typename T>
-inline Client<T> SocketManager::makeClient(std::string topic)
+inline Client SocketManager::makeClient(std::string topic)
 {
-	Client<T> client;
+	Client client;
 
 	// if(port_map_.find(topic) != port_map_.end())
 	// {
@@ -96,12 +96,17 @@ inline Client<T> SocketManager::makeClient(std::string topic)
 	// 	client.setPort(port_map_[topic]);
 	// }
 
+	T type;
+	client.determineType(type);
+
 	TopicInfo info;
 	info.topic = topic;
 	info.pid = process_id_;
 	info.type = CLIENT;
 	
+	client.setTopicInfo(std::move(info));
 	link_master::LinkRpc::execute(info, client.getPortList());
+	client_list_.push_back(client);
 
 	return client;
 }
@@ -115,28 +120,36 @@ inline Server SocketManager::makeServer(std::string topic, std::function<void(co
 	info.topic = topic;
 	info.pid = process_id_;
 	info.type = SERVER;
+	server.setTopicInfo(std::move(info));
 
 	T type;
 	server.determineType(type);
 
-	// if(port_map_.find(topic) != port_map_.end())
-	// {
-	// 	cout<<"find server match:"<<topic<<","<<port_map_[topic]<<endl;
-		
-	// 	server.setPort(port_map_[topic]);
-	// 	server.setCallback(f);
+	std::vector<int> ports;
+	link_master::LinkRpc::execute(info, ports);
+	server.setPort(ports[0]);
 
-	// 	server_list_.push_back(server);
-	// }
+	server.setCallback(f);
+
+	server_list_.push_back(server);
 	
 	return server;
 }
 
 inline void SocketManager::spinOnce()
 {
+	for(auto it = client_list_.begin(); it != client_list_.end(); ++it)
+	{
+		link_master::LinkRpc::execute(it->getTopicInfo(), it->getPortList());
+	}
+
 	for(auto it = server_list_.begin(); it != server_list_.end(); ++it)
 	{
-		it->receiveOnce();
+		std::vector<int> ports;
+		link_master::LinkRpc::execute(it->getTopicInfo(), ports);
+		it->setPort(ports[0]);
+
+		//it->receiveOnce();
 	}
 }
 

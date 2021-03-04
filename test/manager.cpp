@@ -24,7 +24,7 @@ public:
 private:
 	std::shared_ptr<SocketManager> socket_manager_;
 	
-	Client<Pose> pose_client_;
+	Client pose_client_;
 	Server finish_server_;
 	Server data_server_;
 
