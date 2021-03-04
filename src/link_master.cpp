@@ -117,34 +117,65 @@ void LinkMaster::processRpcCmd(char (&recv_buf)[MESSAGE_SIZE], char (&send_buf)[
 			/* if a topic has never been mentioned */
 			info.port = port_dispatch_;
 			++port_dispatch_;
-			topic_info_map_.insert(make_pair(topic, info));
+			std::vector<TopicInfo> info_list{info};
+			
+			topic_info_map_.insert(make_pair(topic, info_list));
+			send_int_buf[0] = -1;
 		}
 		else
 		{
 			/* if the topic has been already registered */
 			auto& info_list = topic_info_map_[topic];
+			bool find_client = false;
 			for(size_t i = 0; i < info_list.size(); ++i)
 			{
 				if(info_list[i].type == CLIENT)
 				{
-					send_int_buf[i] = info_list[i].port;
+					send_int_buf[0] = info_list[i].port;
+					info.port = info_list[i].port;
+					info_list.push_back(info);
+					find_client = true;
 					break;
+				}
+			}
+
+			/* if there is no client yet, store this server */
+			if(!find_client)
+			{
+				info.port = port_dispatch_;
+				++port_dispatch_;
+				info_list.push_back(info);
+				send_int_buf[0] = -1;
+			}
+		}
+
+		memcpy(send_buf, send_int_buf, sizeof(int));
+	}
+	else
+	{
+		if(topic_info_map_.find(topic) == topic_info_map_.end())
+		{
+			info.port = port_dispatch_;
+			++port_dispatch_;
+			std::vector<TopicInfo> info_list{info};
+			topic_info_map_.insert(make_pair(topic, info_list));
+			send_int_buf[0] = -1;
+			memcpy(send_buf, send_int_buf, sizeof(int));
+		}
+		else
+		{
+			auto& info_list = topic_info_map_[topic];
+			int ind = 0;
+			for(size_t i = 0; i < info_list.size(); ++i)
+			{
+				if(info_list[i].type == SERVER)
+				{
+					send_int_buf[ind] = info_list[i].port;
+					++ind;
 				}
 			}
 		}
 	}
-	else
-	{
-		
-	}
-	
-
-	auto& info_list = topic_info_map_[info.topic];
-	for(size_t i = 0; i < info_list.size(); ++i)
-	{
-		send_int_buf[i] = info_list[i].port;
-	}
-	memcpy(send_buf, send_int_buf, info_list.size()*sizeof(int));
 }
 
 }/* end of namespace */
