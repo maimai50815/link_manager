@@ -32,6 +32,7 @@ using namespace std;
 
 #define CLIENT 1
 #define SERVER 2
+#define PROCESS_CLOSE -1
 
 static int master_port = 9000;
 
@@ -39,10 +40,11 @@ struct TopicInfo
 {
 	int pid = -1;
 	int type = -1; 
-	std::string topic;
 	int port = -1;
+	std::string topic;
 };
 
+/* datatype */
 struct IntArray
 {
 	int id = 1;
@@ -75,6 +77,14 @@ enum class DataType
 	Pose,
 	IntSingle,
 	NanValue
+};
+
+struct Message
+{
+	bool isNan = false;
+	int socketFd;
+	int clientId = -1;
+	char sendBuffer[MESSAGE_SIZE];
 };
 
 static int buildSocket()

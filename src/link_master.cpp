@@ -69,15 +69,15 @@ void LinkMaster::mainCycle()
 			char recv_buf[MESSAGE_SIZE];
 			char send_buf[MESSAGE_SIZE];
 			int i = 0;
-			while(1)
+			while(!finished_)
 			{
-				cout<<"recv:"<<fd<<endl;
+				//cout<<"recv:"<<fd<<endl;
 				int size = recv(fd, recv_buf, MESSAGE_SIZE, 0);
 
 				if(size>0)
 				{
 					recv_buf[size] = '\0';
-					printf("%s\n", recv_buf);
+					//printf("%s\n", recv_buf);
 					processRpcCmd(recv_buf, send_buf);
 					send(fd, send_buf, strlen(send_buf), 0);
 				}
@@ -101,78 +101,130 @@ void LinkMaster::processRpcCmd(char (&recv_buf)[MESSAGE_SIZE], char (&send_buf)[
 	TopicInfo info;
 	info.pid = recv_int_buf[0];
 	info.type = recv_int_buf[1];
-	
+	cout<<"info.pid:"<<info.pid<<endl;
+
+	if(info.type == PROCESS_CLOSE)
+	{
+		/* find all clients and servers from this process id, and delete them */
+		deleteClosedProcess(info.pid);
+		return;
+	}
+
 	char tmp[100];
-	memcpy(tmp, recv_buf+2*sizeof(int), strlen(recv_buf)-2*sizeof(int));
+	memcpy(tmp, recv_buf+2*sizeof(int), 100);
 	std::string topic(tmp);
 	info.topic = topic;
+	cout<<"info.topic:"<<info.topic<<endl;
 
 	/* TODO */
 	/* dispatch the ports to clients and servers */
 	/* a server could accept a single client ... */
 	if(info.type == SERVER)
 	{
-		if(topic_info_map_.find(topic) == topic_info_map_.end())
-		{
-			/* if a topic has never been mentioned */
-			info.port = port_dispatch_;
-			++port_dispatch_;
-			std::vector<TopicInfo> info_list{info};
-			
-			topic_info_map_.insert(make_pair(topic, info_list));
-			send_int_buf[0] = -1;
-		}
-		else
-		{
-			/* if the topic has been already registered */
-			auto& info_list = topic_info_map_[topic];
-			bool find_client = false;
-			for(size_t i = 0; i < info_list.size(); ++i)
-			{
-				if(info_list[i].type == CLIENT)
-				{
-					send_int_buf[0] = info_list[i].port;
-					info.port = info_list[i].port;
-					info_list.push_back(info);
-					find_client = true;
-					break;
-				}
-			}
+		cout<<"SERVER"<<endl;
 
-			/* if there is no client yet, store this server */
-			if(!find_client)
-			{
-				info.port = port_dispatch_;
-				++port_dispatch_;
-				info_list.push_back(info);
-				send_int_buf[0] = -1;
-			}
-		}
+		processServerCmd(info, send_int_buf);
 
 		memcpy(send_buf, send_int_buf, sizeof(int));
 	}
 	else
 	{
-		if(topic_info_map_.find(topic) == topic_info_map_.end())
+		cout<<"CLIENT"<<endl;
+
+		processClientCmd(info, send_int_buf);
+
+		memcpy(send_buf, send_int_buf, sizeof(int));
+	}
+}
+
+void LinkMaster::deleteClosedProcess(int pid)
+{
+	cout<<"...... delete closed process:"<<pid<<endl;
+
+	/* delete all registed infomation from this process */
+	for(auto it = topic_info_map_.begin(); it != topic_info_map_.end(); ++it)
+	{
+		auto& vec = it->second;
+
+		bool found = true;
+		while(found)
 		{
-			info.port = port_dispatch_;
-			++port_dispatch_;
-			std::vector<TopicInfo> info_list{info};
-			topic_info_map_.insert(make_pair(topic, info_list));
-			send_int_buf[0] = -1;
-			memcpy(send_buf, send_int_buf, sizeof(int));
-		}
-		else
-		{
-			auto& info_list = topic_info_map_[topic];
-			int ind = 0;
-			for(size_t i = 0; i < info_list.size(); ++i)
+			found = false;
+			for(auto vec_it = vec.begin(); vec_it != vec.end(); ++vec_it)
 			{
-				if(info_list[i].type == SERVER)
+				if(vec_it->pid == pid)
 				{
-					send_int_buf[ind] = info_list[i].port;
-					++ind;
+					found = true;
+					vec.erase(vec_it);
+					break;
 				}
+			}
+		}
+	}
+}
+
+void LinkMaster::processServerCmd(TopicInfo& info, int (&send_int_buf)[100])
+{
+	if(topic_info_map_.find(info.topic) == topic_info_map_.end())
+	{
+		//cout<<"no found ........."<<endl;
+
+		/* if a topic has never been mentioned */
+		info.port = dispatchPort();
+		std::vector<TopicInfo> info_list{info};
+		
+		topic_info_map_.insert(make_pair(info.topic, info_list));
+		send_int_buf[0] = -1;
+	}
+	else
+	{
+		//cout<<"found ! ........."<<endl;
+
+		/* if the topic has been already registered */
+		auto& info_list = topic_info_map_[info.topic];
+		bool find_client = false;
+		for(size_t i = 0; i < info_list.size(); ++i)
+		{
+			if(info_list[i].type == CLIENT)
+			{
+				cout<<"find client port:"<<info_list[i].port<<endl;
+				send_int_buf[0] = info_list[i].port;
+				info.port = info_list[i].port;
+				info_list.push_back(info);
+				find_client = true;
+				break;
+			}
+		}
+
+		/* if there is no client yet, store this server */
+		if(!find_client)
+		{
+			info.port = dispatchPort();
+			info_list.push_back(info);
+			send_int_buf[0] = -1;
+		}
+	}
+}
+
+void LinkMaster::processClientCmd(TopicInfo& info, int (&send_int_buf)[100])
+{
+	if(topic_info_map_.find(info.topic) == topic_info_map_.end())
+	{
+		info.port = dispatchPort();
+		std::vector<TopicInfo> info_list{info};
+		topic_info_map_.insert(make_pair(info.topic, info_list));
+		send_int_buf[0] = -1;
+	}
+	else
+	{
+		auto& info_list = topic_info_map_[info.topic];
+		int ind = 0;
+		for(size_t i = 0; i < info_list.size(); ++i)
+		{
+			if(info_list[i].type == SERVER)
+			{
+				send_int_buf[ind] = info_list[i].port;
+				++ind;
 			}
 		}
 	}

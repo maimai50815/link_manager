@@ -21,6 +21,10 @@ private:
 
 	void processRpcCmd(char (&recv_buf)[MESSAGE_SIZE], char (&send_buf)[MESSAGE_SIZE]);
 
+	void deleteClosedProcess(int);
+	void processServerCmd(TopicInfo&, int (&intbuf)[100]);
+	void processClientCmd(TopicInfo&, int (&intbuf)[100]);
+
 	std::unordered_map<std::string, std::vector<TopicInfo> > topic_info_map_;
 
 	std::shared_ptr<ThreadPool> thread_pool_;
@@ -30,7 +34,18 @@ private:
 
 	const int master_port_ = 9000;
 	int socket_fd_;
-	int port_dispatch_ = 1000;
+
+	int dispatchPort()
+	{
+		sockaddr_storage ss;
+		socklen_t ss_len = sizeof(ss);
+		getsockname(socket_fd_, (sockaddr *)&ss, &ss_len);
+
+		sockaddr_in *sin = (sockaddr_in *)&ss;
+		
+		int port_new = (sin->sin_port);
+		return port_new;
+	}
 };
 }/* end of namespace */
 #endif

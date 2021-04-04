@@ -149,6 +149,19 @@ slaver/fast:
 	$(MAKE) -f CMakeFiles/slaver.dir/build.make CMakeFiles/slaver.dir/build
 .PHONY : slaver/fast
 
+#=============================================================================
+# Target rules for targets named monitor
+
+# Build rule for target.
+monitor: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 monitor
+.PHONY : monitor
+
+# fast build rule for target.
+monitor/fast:
+	$(MAKE) -f CMakeFiles/monitor.dir/build.make CMakeFiles/monitor.dir/build
+.PHONY : monitor/fast
+
 src/link_master.o: src/link_master.cpp.o
 
 .PHONY : src/link_master.o
@@ -203,6 +216,33 @@ test/manager.cpp.s:
 	$(MAKE) -f CMakeFiles/manager.dir/build.make CMakeFiles/manager.dir/test/manager.cpp.s
 .PHONY : test/manager.cpp.s
 
+test/monitor.o: test/monitor.cpp.o
+
+.PHONY : test/monitor.o
+
+# target to build an object file
+test/monitor.cpp.o:
+	$(MAKE) -f CMakeFiles/monitor.dir/build.make CMakeFiles/monitor.dir/test/monitor.cpp.o
+.PHONY : test/monitor.cpp.o
+
+test/monitor.i: test/monitor.cpp.i
+
+.PHONY : test/monitor.i
+
+# target to preprocess a source file
+test/monitor.cpp.i:
+	$(MAKE) -f CMakeFiles/monitor.dir/build.make CMakeFiles/monitor.dir/test/monitor.cpp.i
+.PHONY : test/monitor.cpp.i
+
+test/monitor.s: test/monitor.cpp.s
+
+.PHONY : test/monitor.s
+
+# target to generate assembly for a file
+test/monitor.cpp.s:
+	$(MAKE) -f CMakeFiles/monitor.dir/build.make CMakeFiles/monitor.dir/test/monitor.cpp.s
+.PHONY : test/monitor.cpp.s
+
 test/slaver.o: test/slaver.cpp.o
 
 .PHONY : test/slaver.o
@@ -237,16 +277,20 @@ help:
 	@echo "... clean"
 	@echo "... depend"
 	@echo "... rebuild_cache"
+	@echo "... edit_cache"
 	@echo "... link_master"
 	@echo "... manager"
 	@echo "... slaver"
-	@echo "... edit_cache"
+	@echo "... monitor"
 	@echo "... src/link_master.o"
 	@echo "... src/link_master.i"
 	@echo "... src/link_master.s"
 	@echo "... test/manager.o"
 	@echo "... test/manager.i"
 	@echo "... test/manager.s"
+	@echo "... test/monitor.o"
+	@echo "... test/monitor.i"
+	@echo "... test/monitor.s"
 	@echo "... test/slaver.o"
 	@echo "... test/slaver.i"
 	@echo "... test/slaver.s"

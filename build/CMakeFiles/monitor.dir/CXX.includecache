@@ -92,9 +92,7 @@ link_rpc.h
 common.h
 ../include/common.h
 
-/home/ruoyu/control_ws/src/test/link_manager/test/slaver.cpp
+/home/ruoyu/control_ws/src/test/link_manager/test/monitor.cpp
 socket_manager.h
 /home/ruoyu/control_ws/src/test/link_manager/test/socket_manager.h
-signal.h
--
 

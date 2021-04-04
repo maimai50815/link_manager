@@ -7,6 +7,21 @@
 
 using namespace std;
 
+namespace socket_manager
+{
+bool _ok = true;
+
+static void sigintHandler(int)
+{
+	cout<<"not ok"<<endl;
+    _ok = false;
+}
+
+static bool ok()
+{
+	return _ok;
+}
+
 class SocketManager
 {
 public:
@@ -20,6 +35,8 @@ public:
 	Server makeServer(std::string topic, std::function<void(const T&)> f);
 
 	void spinOnce();
+	
+	void shutdown();
 private:
 
 	std::vector<Server> server_list_;
@@ -34,12 +51,25 @@ private:
 	const std::string master_ip_ = "127.0.0.1";
 
 	int process_id_ = -1;
+
+	std::thread* publish_thread_;
+	void publishCycle();
+
+	std::thread* negotiate_thread_;
+	void negotiateCycle();
+
+	std::queue<Message> publish_queue_;
+
+	void sendMessage(Message& m);
 };
 
 inline SocketManager::SocketManager()
 {
+	signal(SIGINT, sigintHandler);
+
 	process_id_ = getpid();
-	while(1)
+
+	while(ok())
 	{
 		if(connectMaster())
 		{
@@ -54,10 +84,18 @@ inline SocketManager::SocketManager()
 		++retry_times_;
 		std::this_thread::sleep_for(std::chrono::milliseconds(100));
 	}
+
+	publish_thread_ = new std::thread(&SocketManager::publishCycle, this);
+	negotiate_thread_ = new std::thread(&SocketManager::negotiateCycle, this);
 }
 
 inline SocketManager::~SocketManager()
 {
+	shutdown();
+	publish_thread_->join();
+	delete publish_thread_;
+	negotiate_thread_->join();
+	delete negotiate_thread_;
 }
 
 inline bool SocketManager::connectMaster()
@@ -90,12 +128,8 @@ inline Client SocketManager::makeClient(std::string topic)
 {
 	Client client;
 
-	// if(port_map_.find(topic) != port_map_.end())
-	// {
-	// 	cout<<"find client match:"<<topic<<","<<port_map_[topic]<<endl;
-	// 	client.setPort(port_map_[topic]);
-	// }
-
+	client.registQueue(&publish_queue_);
+	
 	T type;
 	client.determineType(type);
 
@@ -105,7 +139,9 @@ inline Client SocketManager::makeClient(std::string topic)
 	info.type = CLIENT;
 	
 	client.setTopicInfo(std::move(info));
-	link_master::LinkRpc::execute(info, client.getPortList());
+	link_master::LinkRpc::execute(info, client.getPortList(), master_fd_);
+
+	client.setId((int)client_list_.size());
 	client_list_.push_back(client);
 
 	return client;
@@ -126,7 +162,7 @@ inline Server SocketManager::makeServer(std::string topic, std::function<void(co
 	server.determineType(type);
 
 	std::vector<int> ports;
-	link_master::LinkRpc::execute(info, ports);
+	link_master::LinkRpc::execute(info, ports, master_fd_);
 	server.setPort(ports[0]);
 
 	server.setCallback(f);
@@ -138,31 +174,94 @@ inline Server SocketManager::makeServer(std::string topic, std::function<void(co
 
 inline void SocketManager::spinOnce()
 {
-	for(auto it = client_list_.begin(); it != client_list_.end(); ++it)
-	{
-		link_master::LinkRpc::execute(it->getTopicInfo(), it->getPortList());
-	}
-
 	for(auto it = server_list_.begin(); it != server_list_.end(); ++it)
 	{
-		std::vector<int> ports;
-		link_master::LinkRpc::execute(it->getTopicInfo(), ports);
-		it->setPort(ports[0]);
-
-		//it->receiveOnce();
+		if(it->haveClient())
+			it->receiveOnce();
 	}
 }
 
-namespace socket_manager
+inline void SocketManager::publishCycle()
 {
+	while(ok())
+	{
+		std::this_thread::sleep_for(std::chrono::milliseconds(10));
+
+		/* get the publish queue and fill those publishers have not send messages with blank massages */
+		std::vector<int> publish_list(client_list_.size(), 0);
+		while(1)
+		{
+			if(publish_queue_.empty())
+				break;
+
+			
+			for(size_t i = 0; i < client_list_.size(); ++i)
+			{
+				
+			}
+		}
+
+		/* find those silent publishers and publish blank message */
+		for(size_t i = 0; i < publish_list.size(); ++i)
+		{
+			if(publish_list[i] < 1)
+			{
+				Message m;
+				m.isNan = true;
+				m.socketFd = client_list_[i].getSocketFd();
+
+				sendMessage(m);
+			}
+		}
+	}
+}
+
+inline void SocketManager::negotiateCycle()
+{
+	while(ok())
+	{
+		std::this_thread::sleep_for(std::chrono::milliseconds(500));
+
+		/* negotiate with master, get the pending topics */
+		for(auto it = client_list_.begin(); it != client_list_.end(); ++it)
+		{
+			link_master::LinkRpc::execute(it->getTopicInfo(), it->getPortList(), master_fd_);
+			it->processPendingPorts();
+		}
+
+		for(auto it = server_list_.begin(); it != server_list_.end(); ++it)
+		{
+			std::vector<int> ports;
+			link_master::LinkRpc::execute(it->getTopicInfo(), ports, master_fd_);
+			it->setPort(ports[0]);
+			it->processPendingPorts();
+		}
+	}
+}
+
+inline void SocketManager::sendMessage(Message& m)
+{
+
+}
+
+inline void SocketManager::shutdown()
+{
+	TopicInfo info;
+	info.pid = process_id_;
+	info.type = PROCESS_CLOSE;
+	info.topic == "/";
+	std::vector<int> ports;
+	link_master::LinkRpc::execute(info, ports, master_fd_);
+}
+
 static void spin(std::shared_ptr<SocketManager> m)
 {
 	if(m == nullptr)
 		return;
 
-	while(1)
+	while(ok())
 	{
-		std::this_thread::sleep_for(std::chrono::milliseconds(50));
+		std::this_thread::sleep_for(std::chrono::milliseconds(10));
 		m->spinOnce();
 	}
 }

@@ -8,5 +8,6 @@ CMakeFiles/slaver.dir/test/slaver.cpp.o: ../include/link_rpc.h
 CMakeFiles/slaver.dir/test/slaver.cpp.o: ../include/serialize.h
 CMakeFiles/slaver.dir/test/slaver.cpp.o: ../include/server.h
 CMakeFiles/slaver.dir/test/slaver.cpp.o: ../include/socket_manager.h
+CMakeFiles/slaver.dir/test/slaver.cpp.o: ../include/tcp_transport.h
 CMakeFiles/slaver.dir/test/slaver.cpp.o: ../test/slaver.cpp
 

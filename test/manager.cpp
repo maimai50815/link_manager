@@ -2,13 +2,7 @@
 
 using namespace std;
 using namespace std::placeholders;
-
-bool cycle_finished = false;
-static void basicSigintHandler(int)
-{
-    cycle_finished = true;
-    cout<<"!!!!!!!!!!!!!! basicSigintHandler"<<endl;
-}
+using namespace socket_manager;
 
 namespace manager
 {
@@ -17,12 +11,10 @@ class Manager
 public:
 	Manager();
 	~Manager();
-	std::shared_ptr<SocketManager> getSocketManager()
-	{
-		return socket_manager_;
-	}
+	using ManagerPtr = std::shared_ptr<SocketManager>;
+	ManagerPtr getManager(){ return socket_manager_; }
 private:
-	std::shared_ptr<SocketManager> socket_manager_;
+	ManagerPtr socket_manager_;
 	
 	Client pose_client_;
 	Server finish_server_;
@@ -36,7 +28,6 @@ private:
 	void dataCb(const IntArray& msg);
 
 	std::thread* main_thread_;
-	std::thread* spin_thread_;
 };
 
 Manager::Manager()
@@ -47,10 +38,8 @@ Manager::Manager()
 	finish_server_ = socket_manager_->makeServer<IntSingle>("/finish", std::bind(&Manager::finishCb, this, _1));
 	data_server_ = socket_manager_->makeServer<IntArray>("/data", std::bind(&Manager::dataCb, this, _1));
 	
-	signal(SIGINT, basicSigintHandler);
-
 	main_thread_ = new std::thread([&](){
-		while(!cycle_finished)
+		while(socket_manager::ok())
 		{
 			std::this_thread::sleep_for(std::chrono::milliseconds(200));
 			
@@ -67,23 +56,13 @@ Manager::Manager()
 		cout<<"main finish"<<endl;
 	});
 
-	spin_thread_ = new std::thread([&](){
-		while(!cycle_finished)
-		{
-			std::this_thread::sleep_for(std::chrono::milliseconds(50));
-			socket_manager_->spinOnce();
-		}
-		cout<<"spin finish"<<endl;
-	});
 }
 
 Manager::~Manager()
 {
 	cout<<"...... manager dtor"<<endl;
 	main_thread_->join();
-	spin_thread_->join();
 	delete main_thread_;
-	delete spin_thread_;
 	cout<<"...... manager dtor finish"<<endl;
 }
 
@@ -109,7 +88,7 @@ void Manager::dataCb(const IntArray& msg)
 int main(int argc, char** argv)
 {
 	manager::Manager m;
-	//socket_manager::spin(m.getSocketManager());
+	socket_manager::spin(m.getManager());
 	
 	return 0;
 }

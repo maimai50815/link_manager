@@ -3,6 +3,7 @@
 
 #include "common.h"
 #include "serialize.h"
+#include "tcp_transport.h"
 
 class Client
 {
@@ -32,6 +33,13 @@ public:
 	void setTopicInfo(TopicInfo&& info){ topic_info_ = info; }
 	TopicInfo& getTopicInfo(){ auto& p = topic_info_; return p; }
 	
+	using QueuePtr = std::queue<Message>*;
+	void registQueue(QueuePtr ptr){ publish_queue_ptr_ = ptr; }
+	void setId(int id){ id_ = id; }
+	int getId(){ return id_; }
+	int getSocketFd(){ return socket_fd_; }
+	bool haveServer(){ return !(port_list_.empty()); }
+	void processPendingPorts();
 private:
 	std::shared_ptr<Serializer> serializer_;
 
@@ -53,6 +61,12 @@ private:
 	bool init_ = false;
 
 	TopicInfo topic_info_;
+
+	QueuePtr publish_queue_ptr_;
+
+	int id_;
+private:
+	std::vector<TcpTransport> transport_list_;
 };
 
 inline Client::Client()
@@ -110,14 +124,24 @@ inline void Client::publish(T& msg)
 {
 	if(!init_)
 		return;
-		
+
+	if(!haveServer())
+		return;
+
 	link();
+	
+	memset(send_buf_, 0, MESSAGE_SIZE);
+	serializer_->getBuffer(msg, send_buf_);
+
+	Message m;
+	m.clientId = id_;
+	memcpy(m.sendBuffer, send_buf_, MESSAGE_SIZE);
+	publish_queue_ptr_->push(m);		
+	
 
 	if(linked_)
 	{
-		memset(send_buf_, 0, MESSAGE_SIZE);
-
-		serializer_->getBuffer(msg, send_buf_);
+		
 		
 		if(send(socket_fd_, send_buf_, sizeof(send_buf_), 0) < 0)
 		{
@@ -148,5 +172,13 @@ inline void Client::determineType(T type)
 			type_ = DataType::IntSingle;
 		}break;
 	}
+}
+
+inline void Client::processPendingPorts()
+{
+	if()
+		
+	
+
 }
 #endif

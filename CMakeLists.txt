@@ -14,3 +14,6 @@ target_link_libraries(manager pthread)
 
 add_executable(slaver test/slaver.cpp)
 target_link_libraries(slaver pthread)
+
+add_executable(monitor test/monitor.cpp)
+target_link_libraries(monitor pthread)

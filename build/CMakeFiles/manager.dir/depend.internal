@@ -9,4 +9,5 @@ CMakeFiles/manager.dir/test/manager.cpp.o
  ../include/serialize.h
  ../include/server.h
  ../include/socket_manager.h
+ ../include/tcp_transport.h
  /home/ruoyu/control_ws/src/test/link_manager/test/manager.cpp

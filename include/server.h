@@ -3,6 +3,7 @@
 
 #include "common.h"
 #include "deserialize.h"
+#include "tcp_transport.h"
 
 using namespace std;
 
@@ -43,7 +44,8 @@ public:
 
 	void setTopicInfo(TopicInfo&& info){ topic_info_ = info; }
 	TopicInfo& getTopicInfo(){ auto& p = topic_info_; return p; }
-	
+	bool haveClient(){ return (port_>=0); }
+	void processPendingPorts();
 private:
 	std::shared_ptr<Deserializer> deserializer_;
 	
@@ -200,5 +202,10 @@ inline void Server::determineType(T type)
 			type_ = DataType::IntSingle;
 		}break;
 	}
+}
+
+inline void Server::processPendingPorts()
+{
+
 }
 #endif

@@ -46,4 +46,5 @@ set(CMAKE_DEPEND_INFO_FILES
   "CMakeFiles/link_master.dir/DependInfo.cmake"
   "CMakeFiles/manager.dir/DependInfo.cmake"
   "CMakeFiles/slaver.dir/DependInfo.cmake"
+  "CMakeFiles/monitor.dir/DependInfo.cmake"
   )
