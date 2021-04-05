@@ -58,9 +58,9 @@ private:
 	std::thread* negotiate_thread_;
 	void negotiateCycle();
 
-	std::queue<Message> publish_queue_;
+	std::queue<TcpTransport*> publish_queue_;
 
-	void sendMessage(Message& m);
+	std::mutex cycle_mutex_;
 };
 
 inline SocketManager::SocketManager()
@@ -163,8 +163,9 @@ inline Server SocketManager::makeServer(std::string topic, std::function<void(co
 
 	std::vector<int> ports;
 	link_master::LinkRpc::execute(info, ports, master_fd_);
-	server.setPort(ports[0]);
-
+	if(!ports.empty())
+		server.setPort(ports[0]);
+	
 	server.setCallback(f);
 
 	server_list_.push_back(server);
@@ -187,18 +188,27 @@ inline void SocketManager::publishCycle()
 	{
 		std::this_thread::sleep_for(std::chrono::milliseconds(10));
 
+		std::lock_guard<std::mutex> lg(cycle_mutex_);
+
 		/* get the publish queue and fill those publishers have not send messages with blank massages */
 		std::vector<int> publish_list(client_list_.size(), 0);
-		while(1)
+		while(ok())
 		{
 			if(publish_queue_.empty())
 				break;
 
+			TcpTransport* transport = publish_queue_.front();
+			publish_queue_.pop();
 			
-			for(size_t i = 0; i < client_list_.size(); ++i)
+			for(int i = 0; i < (int)client_list_.size(); ++i)
 			{
-				
+				if(transport->getClientId() == i)
+				{
+					publish_list[i] = 1;
+				}
 			}
+
+			transport->send();
 		}
 
 		/* find those silent publishers and publish blank message */
@@ -206,11 +216,7 @@ inline void SocketManager::publishCycle()
 		{
 			if(publish_list[i] < 1)
 			{
-				Message m;
-				m.isNan = true;
-				m.socketFd = client_list_[i].getSocketFd();
-
-				sendMessage(m);
+				client_list_[i].sendBlankMessage();
 			}
 		}
 	}
@@ -221,6 +227,8 @@ inline void SocketManager::negotiateCycle()
 	while(ok())
 	{
 		std::this_thread::sleep_for(std::chrono::milliseconds(500));
+
+		std::lock_guard<std::mutex> lg(cycle_mutex_);
 
 		/* negotiate with master, get the pending topics */
 		for(auto it = client_list_.begin(); it != client_list_.end(); ++it)
@@ -233,15 +241,12 @@ inline void SocketManager::negotiateCycle()
 		{
 			std::vector<int> ports;
 			link_master::LinkRpc::execute(it->getTopicInfo(), ports, master_fd_);
-			it->setPort(ports[0]);
+			if(!ports.empty())
+				it->setPort(ports[0]);
+				
 			it->processPendingPorts();
 		}
 	}
-}
-
-inline void SocketManager::sendMessage(Message& m)
-{
-
 }
 
 inline void SocketManager::shutdown()

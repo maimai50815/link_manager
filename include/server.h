@@ -52,6 +52,7 @@ private:
 	DataType type_;
 	
 	int port_ = -1;
+	int previous_port_ = -1;
 
 	std::string ip_ = "127.0.0.1";
 	sockaddr_in local_addr_, remote_addr_;
@@ -206,6 +207,9 @@ inline void Server::determineType(T type)
 
 inline void Server::processPendingPorts()
 {
-
+	if(previous_port_<0 && port_>=0)
+	{
+		link();
+	}
 }
 #endif

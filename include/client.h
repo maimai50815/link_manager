@@ -22,8 +22,6 @@ public:
 	template <typename T>
 	void determineType(T type);
 
-	void link();
-	void buildSocket();
 	std::vector<int>& getPortList()
 	{
 		auto& p = port_list_;
@@ -33,13 +31,15 @@ public:
 	void setTopicInfo(TopicInfo&& info){ topic_info_ = info; }
 	TopicInfo& getTopicInfo(){ auto& p = topic_info_; return p; }
 	
-	using QueuePtr = std::queue<Message>*;
+	using QueuePtr = std::queue<TcpTransport*>*;
 	void registQueue(QueuePtr ptr){ publish_queue_ptr_ = ptr; }
 	void setId(int id){ id_ = id; }
 	int getId(){ return id_; }
 	int getSocketFd(){ return socket_fd_; }
 	bool haveServer(){ return !(port_list_.empty()); }
 	void processPendingPorts();
+
+	void sendBlankMessage();
 private:
 	std::shared_ptr<Serializer> serializer_;
 
@@ -66,57 +66,12 @@ private:
 
 	int id_;
 private:
-	std::vector<TcpTransport> transport_list_;
+	std::vector<TcpTransport*> transport_list_;
 };
 
 inline Client::Client()
 {
 	serializer_ = std::make_shared<Serializer>();
-
-	buildSocket();
-}
-
-inline void Client::buildSocket()
-{
-	socket_fd_ = socket(AF_INET, SOCK_STREAM, 0);
-
-	if(socket_fd_<0)
-	{
-		cerr<<"failed to create socket ... "<<endl;
-		socket_built_ = false;
-	}
-	else
-		socket_built_ = true;
-}
-
-inline void Client::link()
-{
-	if(!socket_built_)
-	{
-		buildSocket();
-	}
-	else if(!linked_)
-	{
-		memset(&server_addr_,0,sizeof(server_addr_));
-		server_addr_.sin_family = AF_INET;
-		server_addr_.sin_port = htons(port_);
-
-		const auto str = ip_.data();
-		server_addr_.sin_addr.s_addr = inet_addr(str);
-
-		int connect_ret = connect(socket_fd_, (sockaddr*)&server_addr_, sizeof(sockaddr));
-
-		if(connect_ret<0)
-		{
-			cout<<port_<<": failed to connect !"<<endl;
-			linked_ = false;
-		}
-		else
-		{
-			cout<<port_<<": connect succeed"<<endl;
-			linked_ = true;
-		}
-	}
 }
 
 template <typename T>
@@ -128,27 +83,15 @@ inline void Client::publish(T& msg)
 	if(!haveServer())
 		return;
 
-	link();
-	
 	memset(send_buf_, 0, MESSAGE_SIZE);
 	serializer_->getBuffer(msg, send_buf_);
-
-	Message m;
-	m.clientId = id_;
-	memcpy(m.sendBuffer, send_buf_, MESSAGE_SIZE);
-	publish_queue_ptr_->push(m);		
 	
-
-	if(linked_)
+	for(auto transport:transport_list_)
 	{
-		
-		
-		if(send(socket_fd_, send_buf_, sizeof(send_buf_), 0) < 0)
-		{
-			cout<<port_<<": send failed"<<endl;
-		}
-		else
-			cout<<port_<<": send succeed"<<endl;
+		auto& m = transport->getMessage();
+		m.clientId = id_;
+		memcpy(m.sendBuffer, send_buf_, MESSAGE_SIZE);
+		publish_queue_ptr_->push(transport);		
 	}
 }
 
@@ -176,7 +119,59 @@ inline void Client::determineType(T type)
 
 inline void Client::processPendingPorts()
 {
-	if()
+	/* compare the current port list and new negotiated list */
+	for(auto& port:port_list_)
+	{
+		bool found = false;
+		for(auto& transport:transport_list_)
+		{
+			if(port == transport->getPort())
+			{
+				found = true;
+				break;
+			}
+		}
 
+		if(!found)
+		{
+			/* add new transports */
+			transport_list_.push_back(new TcpTransport(port));
+		}
+	}
+
+	for(auto it = transport_list_.begin(); it != transport_list_.end(); ++it)
+	{
+		bool found = false;
+		for(auto& port:port_list_)
+		{
+			if(port == (*it)->getPort())
+			{
+				found = true;
+				break;
+			}
+		}
+
+		if(!found)
+		{
+			/* delete the outline links */
+			(*it)->close();
+			delete (*it);
+			transport_list_.erase(it);
+			if(it == transport_list_.end())
+				break;
+		}
+	}
+}
+
+inline void Client::sendBlankMessage()
+{
+	//cout<<transport_list_.size()<<endl;
+	for(auto& transport:transport_list_)
+	{
+		auto& m = transport->getMessage();
+		char buf[MESSAGE_SIZE] = "blank";
+		memcpy(m.sendBuffer, buf, MESSAGE_SIZE);
+		transport->send();
+	}
 }
 #endif

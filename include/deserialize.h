@@ -21,6 +21,12 @@ inline Deserializer::Deserializer()
 
 inline bool Deserializer::getMsg(char buf[MESSAGE_SIZE], Pose& msg)
 {
+	if(buf == "blank")
+	{
+		cout<<"blank"<<endl;
+		return false;
+	}
+
 	float pose_buf[7];
 	char frame_buf[10];
  
@@ -43,6 +49,12 @@ inline bool Deserializer::getMsg(char buf[MESSAGE_SIZE], Pose& msg)
 
 inline bool Deserializer::getMsg(char buf[MESSAGE_SIZE], IntSingle& msg)
 {
+	if(buf == "blank")
+	{
+		cout<<"blank"<<endl;
+		return false;
+	}
+
 	//int* intbuf = (int*)buf;
 	msg.data = buf[0];
 
@@ -51,6 +63,12 @@ inline bool Deserializer::getMsg(char buf[MESSAGE_SIZE], IntSingle& msg)
 
 inline bool Deserializer::getMsg(char buf[MESSAGE_SIZE], IntArray& msg)
 {
+	if(buf == "blank")
+	{
+		cout<<"blank"<<endl;
+		return false;
+	}
+
 	msg.data.resize(5);
 
 	int* intbuf = (int*)buf;

@@ -63,6 +63,9 @@ inline void LinkRpc::execute(TopicInfo& info, std::vector<int>& ports, int clien
 		ports.clear();
 		for(int i = 0; i < port_size; ++i)
 		{
+			if(port_buf[i]<0)
+				break;
+				
 			ports.push_back(port_buf[i]);
 			cout<<"port_buf["<<i<<"]:"<<port_buf[i]<<endl;
 		}
