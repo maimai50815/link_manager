@@ -177,8 +177,6 @@ inline void Client::determineType(T type)
 inline void Client::processPendingPorts()
 {
 	if()
-		
-	
 
 }
 #endif
